@@ -8,9 +8,7 @@ import ru.easyjava.easymock.repository.GroupRepository;
 import ru.easyjava.easymock.repository.UserRepository;
 
 import static junit.framework.TestCase.fail;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ru.easyjava.easymock.service.testObjectsFactory.testUser;
@@ -42,5 +40,29 @@ public class captureTest {
             fail("Save argument is not valid");
         }
         assertThat(actual.getValue(), is(testUser()));
+    }
+
+    @Test
+    public void multipleCaptureTest() {
+        Capture<User> actual = EasyMock.newCapture(CaptureType.ALL);
+
+        userRepository.save(capture(actual));
+        expectLastCall().anyTimes();
+
+        replay(userRepository);
+
+        testedObject.create("TEST");
+        testedObject.create("SECOND");
+
+        if (!actual.hasCaptured()) {
+            fail("Save argument is not valid");
+        }
+        assertThat(actual.getValues().get(0).getUsername(), is("TEST"));
+        assertThat(actual.getValues().get(1).getUsername(), is("SECOND"));
+
+        /**
+         * Throws java.lang.AssertionError: More than one value captured
+         */
+        //assertThat(actual.getValue(), is(testUser()));
     }
 }
