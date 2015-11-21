@@ -1,6 +1,12 @@
 package ru.easyjava.easymock.service;
 
-import org.easymock.*;
+import org.easymock.Capture;
+import org.easymock.CaptureType;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.Mock;
+import org.easymock.MockType;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
 import ru.easyjava.easymock.entity.User;
