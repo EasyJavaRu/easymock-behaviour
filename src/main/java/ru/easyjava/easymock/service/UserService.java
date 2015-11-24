@@ -3,7 +3,10 @@ package ru.easyjava.easymock.service;
 import ru.easyjava.easymock.entity.Group;
 import ru.easyjava.easymock.entity.User;
 import ru.easyjava.easymock.repository.GroupRepository;
+import ru.easyjava.easymock.repository.OrderRepository;
 import ru.easyjava.easymock.repository.UserRepository;
+
+import java.time.LocalDate;
 
 /**
  * Sample service.
@@ -18,6 +21,11 @@ public class UserService {
      * Sample dependency.
      */
     private GroupRepository groupRepository;
+
+    /**
+     * Sample dependency.
+     */
+    private OrderRepository orderRepository;
 
     /**
      * Default constructor for injection.
@@ -70,5 +78,13 @@ public class UserService {
         u.setGroup(g);
 
         return u;
+    }
+
+    /**
+     * Create order, that will be completed tomorrow.
+     * @param u Order owner.
+     */
+    final void addOrder(User u) {
+        orderRepository.addOrder(u, LocalDate.now().plusDays(1));
     }
 }
